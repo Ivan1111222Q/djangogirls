@@ -9,6 +9,8 @@ RUN apt-get update \
 ENV APP_DIR=/var/www/app
 WORKDIR ${APP_DIR}
 
+COPY . ${APP_DIR}
+
 COPY requirements.txt ${APP_DIR}/requirements.txt
 
 RUN pip install pip-tools \
@@ -20,7 +22,6 @@ RUN npm install \
     && npm install -g gulp
 
 COPY rootfs /
-COPY . ${APP_DIR}
 
 RUN gulp local
 
