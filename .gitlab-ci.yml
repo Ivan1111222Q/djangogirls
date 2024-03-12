@@ -1,0 +1,8 @@
+stages:
+  - print
+
+print_message:
+  stage: print
+  script:
+    - echo "Hello"
+
