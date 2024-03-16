@@ -1,36 +1,30 @@
 stages:
   - build
-  - deploy
+  - push
 
-services:
-  - docker:19.03.12-dind  # Подключаем Docker в GitLab CI
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375/
 
-build:
+build_app:
   stage: build
+  image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
   script:
-    - docker-compose -f docker-compose.yml build  # Сборка всех сервисов в docker-compose.yml
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker-compose build
+  only:
+    - main
 
-deploy:
-  stage: deploy
+push_app:
+  stage: push
+  image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
   script:
-    - docker-compose -f docker-compose.yml up -d  # Запуск всех сервисов в docker-compose.yml в фоновом режиме
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker-compose push
+  only:
+    - main
 
-push_to_registry:
-  stage: deploy
-  script:
-    - docker run -d -p 5000:5000 --restart always --name registry registry:2
-
-push_to_registry2:
-  stage: deploy
-  script:
-    - docker tag django_app localhost:5000/django_app
-
-push_to_registry3:
-  stage: deploy
-  script:
-    - docker push localhost:5000/django_app
-
-push_to_registry4:
-  stage: deploy
-  script:
-    - docker run -d -e ENV_DOCKER_REGISTRY_HOST=5.35.86.16 -e ENV_DOCKER_REGISTRY_PORT=5000 -p 8091:80 konradkleine/docker-registry-frontend:v2
