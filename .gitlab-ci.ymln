@@ -11,7 +11,7 @@ build_app:
   image: docker:19.03.12
   services:
     - docker:19.03.12-dind
-      alias: docker
+        alias: docker
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker-compose build
@@ -23,7 +23,6 @@ push_app:
   image: docker:19.03.12
   services:
     - docker:19.03.12-dind
-      alias: docker
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker-compose push
