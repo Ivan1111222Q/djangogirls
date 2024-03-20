@@ -30,4 +30,4 @@ deploy3:
 vizualizacia:
   stage: deploy
   script:
-    - docker run -d -e ENV_DOCKER_REGISTRY_HOST=5.35.86.16 -e ENV_DOCKER_REGISTRY_PORT=5000 -p 
+    - - docker run -d -e ENV_DOCKER_REGISTRY_HOST=5.35.86.16 -e ENV_DOCKER_REGISTRY_PORT=5000 -p 8091:80 konradkleine/docker-registry-frontend:v2
