@@ -13,7 +13,7 @@ variables:
 build:
   stage: build
   script:
-    - docker-compose -d --build
+    - docker-compose build
 
 deploy:
   stage: deploy
@@ -29,13 +29,13 @@ push_to_registry:
 push_to_registry2:
   stage: deploy
   script:
-    - docker tag django_app localhost:5000/django_app
+    - docker tag djangogirls_app localhost:5000/djangogirls_app
     # Тегируем наш Django app для локального реестра
 
 push_to_registry3:
   stage: deploy
   script:
-    - docker push localhost:5000/django_app
+    - docker push localhost:5000/djangogirls_app
     # Пушим образ в локальный реестр
 vizualizacia:
   stage: deploy
