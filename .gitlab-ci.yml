@@ -13,12 +13,12 @@ variables:
 build:
   stage: build
   script:
-    - docker-compose -f docker-compose.yml build
+    - docker-compose -d --build
 
 deploy:
   stage: deploy
   script:
-    - docker-compose -f docker-compose.yml up -d
+    - docker-compose up -d
 
 push_to_registry:
   stage: deploy
