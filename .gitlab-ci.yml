@@ -1,14 +1,6 @@
 stages:
   - build
-  - deploy
-
-services:
-  - docker:19.03.12-dind
-
-variables:
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay2
-  # Обеспечиваем работу Docker-in-Docker
+  - deploy 
 
 build:
   stage: build
@@ -19,25 +11,3 @@ deploy:
   stage: deploy
   script:
     - docker-compose -f docker-compose.yml up -d
-
-push_to_registry:
-  stage: deploy
-  script:
-    - docker run -d -p 5000:5000 --restart always --name registry registry:2
-    # Запускаем Docker реестр
-
-push_to_registry2:
-  stage: deploy
-  script:
-    - docker tag djangogirls_app localhost:5000/djangogirls_app
-    # Тегируем наш Django app для локального реестра
-
-push_to_registry3:
-  stage: deploy
-  script:
-    - docker push localhost:5000/djangogirls_app
-    # Пушим образ в локальный реестр
-vizualizacia:
-  stage: deploy
-  script:
-    - docker run -d -e ENV_DOCKER_REGISTRY_HOST=5.35.86.16 -e ENV_DOCKER_REGISTRY_PORT=5000 -p
