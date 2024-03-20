@@ -12,7 +12,9 @@ build:
   services:
     - docker:19.03.12-dind
   before_script:
-    - apk add --no-cache docker-compose
+    - apt-get update && apt-get install -y python3-pip
+    # Установка docker-compose через pip
+    - pip3 install docker-compose
   script:
     - docker-compose up --build -d
   only:
