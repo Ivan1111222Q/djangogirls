@@ -1,32 +1,16 @@
+# Определение стадий и задач
 stages:
   - build
-  - push
 
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375/
-
-build_app:
+# Определение задачи для билда и пуша контейнера
+build_and_push:
   stage: build
-  image: docker:19.03.12
-  services:
-    - name: docker:19.03.12-dind
-      alias: docker
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker-compose build
-  only:
-    - main
+    # Билд нового контейнера
+    - docker-compose up -d --build
 
-push_app:
-  stage: push
-  image: docker:19.03.12
-  services:
-    - name: docker:19.03.12-dind
-      alias: docker
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker-compose push
-  only:
-    - main
-
+    # Пуш контейнера в локальный Docker registry
+    - docker run -d -p 5000:5000 --restart always --name registry registry:2
+    - docker tag djangogirls_app localhost:5000/djangogirls_app
+    - docker push localhost:5000/djangogirls_app
+    - docker run -d -e ENV_DOCKER_REGISTRY_HOST=5.35.86.16 -e ENV_DOCKER_REGISTRY_PORT=5000 -p 8091:80 konradkleine/docker-registry-frontend:v2
