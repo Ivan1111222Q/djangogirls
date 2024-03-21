@@ -1,14 +1,17 @@
 stages:
   - build
 
+variables:
+  # Замените этот адрес на адрес вашего реестра, если $CI_REGISTRY_IMAGE не устанавливается автоматически
+  CI_REGISTRY_IMAGE: "5.35.86.16/spirit/django"
+
 build:
   stage: build
   script:
-  - echo $CI_REGISTRY
-  - echo $CI_PROJECT_NAMESPACE
-  - echo $CI_PROJECT_NAME
-  - echo $CI_COMMIT_REF_SLUG
-  - echo $CI_PIPELINE_ID
-  - docker build -t $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID ./nginx/
-  - docker build -t $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID ./app/
+    # Предполагается, что контекст сборки - это каталог `nginx` и `app` соответственно.
+    - echo "Building nginx image..."
+    - docker build -t $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID ./nginx/
+    - echo "Building app image..."
+    - docker build -t $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID ./app/
+
 
