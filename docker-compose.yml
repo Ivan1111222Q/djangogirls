@@ -1,22 +1,20 @@
 version: "3.8"
 
 services:
-  nginx:
-    image: djangogirls_nginx 
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.nginx
+  nginx: 
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     ports:
       - "8081:80"
     depends_on:
       - app
 
-  app:
-    image: djangogirls_app 
+  app: 
     container_name: djangogirls-app
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.app
+    build:
+      context: .
+      dockerfile: Dockerfile.app
     stdin_open: true
     tty: true
     init: true
