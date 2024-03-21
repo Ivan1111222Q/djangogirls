@@ -4,5 +4,6 @@ stages:
 build:
   stage: build
   script:
-  - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:${CI_COMMIT_REF_SLUG}_nginx.$CI_PIPELINE_ID ./nginx/ 
-  - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:${CI_COMMIT_REF_SLUG}_app.$CI_PIPELINE_ID ./app/
+    - docker build -t $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID ./nginx/
+    - docker build -t $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID ./app/
+
