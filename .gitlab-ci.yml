@@ -1,22 +1,10 @@
 stages:
   - build
-
-variables:
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
+  - cleanup
+  - deploy
 
 build:
   stage: build
-  image: docker:19.03.12
-  services:
-    - docker:19.03.12-dind
-  before_script:
-    - apt-get update && apt-get install -y python3-pip
-    # Установка docker-compose через pip
-    - pip3 install docker-compose
   script:
-    - docker-compose up --build -d
-  only:
-    - main
-
+  - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:${CI_COMMIT_REF_SLUG}_nginx.$CI_PIPELINE_ID ./nginx/ 
+  - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:${CI_COMMIT_REF_SLUG}_app.$CI_PIPELINE_ID ./app/
