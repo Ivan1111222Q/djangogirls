@@ -1,5 +1,7 @@
 stages:
   - build
+  - push
+
 
 variables:
   # Замените этот адрес на адрес вашего реестра, если $CI_REGISTRY_IMAGE не устанавливается автоматически
@@ -11,3 +13,10 @@ build:
     - docker build -t $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.nginx ./
     - docker build -t $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.app ./
 
+push:
+  stage: push
+  script:
+    - docker tag $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    - docker tag $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    - docker push localhost:5000/$CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID 
+    - docker push localhost:5000/$CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
