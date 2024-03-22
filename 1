@@ -33,9 +33,7 @@ services:
 
   db:
     container_name: djangogirls-db
-    build:
-      context: .
-      dockerfile: Dockerfile.db
+    image: postgres:15.1
     environment:
       POSTGRES_USER: djangogirls
       POSTGRES_PASSWORD: djangogirls

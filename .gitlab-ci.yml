@@ -1,10 +1,9 @@
 stages:
   - build
   - push
-
+  - deploy
 
 variables:
-  # Замените этот адрес на адрес вашего реестра, если $CI_REGISTRY_IMAGE не устанавливается автоматически
   CI_REGISTRY_IMAGE: "5.35.86.16/spirit/django"
 
 build:
@@ -12,11 +11,20 @@ build:
   script:
     - docker build -t $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.nginx ./
     - docker build -t $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.app ./
+    - docker build -t $CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.db ./
 
 push:
   stage: push
   script:
     - docker tag $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
     - docker tag $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    - docker tag $CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
     - docker push localhost:5000/$CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID 
     - docker push localhost:5000/$CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    - docker push localhost:5000/$CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+
+deploy:
+  stage: deploy
+  script: 
+    - docker-compose -f docker-compose.production.yml up -d 
+
