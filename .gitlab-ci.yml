@@ -36,6 +36,6 @@ push:
 deploy:
   stage: deploy
   script:
-    - scp docker-compose.production.yml root@31.129.97.232:/home/django
+    - scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no docker-compose.production.yml $DEPLOY_SERVER:$DEPLOY_PATH/
     - ssh $DEPLOY_SERVER "cd $DEPLOY_PATH && docker-compose down"
     - ssh $DEPLOY_SERVER "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker-compose -f docker-compose.production.yml pull && docker-compose -f docker-compose.production.yml up -d"
