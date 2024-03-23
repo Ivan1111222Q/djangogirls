@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nginx:
-    image: djangogirls-nginx1
+    image: localhost:5000/djangogirls-nginx
     container_name: djangogirls-nginx 
 #    build:
 #      context: .
@@ -13,7 +13,7 @@ services:
       - app
 
   app:
-    image: djangogirls-app2
+    image: localhost:5000/djangogirls-app
     container_name: djangogirls-app
 #    build:
 #      context: .
@@ -35,7 +35,7 @@ services:
    #   - "${APP_PORT:-8000}:8000"
 
   db:
-    image: djangogirls-db3
+    image: localhost:5000/djangogirls-db
     container_name: djangogirls-db
 #    build:
 #      context: .
