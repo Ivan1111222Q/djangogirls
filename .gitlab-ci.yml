@@ -36,6 +36,7 @@ push:
 deploy:
   stage: deploy
   script:
+    - ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts
     - ssh -V
     - ssh -vvv -T $DEPLOY_SERVER || true
     - scp  docker-compose.production.yml root@31.129.97.232:/home/django
