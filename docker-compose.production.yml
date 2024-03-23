@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
   nginx:
-    image: $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID 
+    image: djangogirls-nginx
+    container_name: djangogirls-app 
 #    build:
 #      context: .
 #      dockerfile: Dockerfile.nginx
@@ -12,7 +13,7 @@ services:
       - app
 
   app:
-    image: $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    image: djangogirls-app
     container_name: djangogirls-app
 #    build:
 #      context: .
@@ -34,7 +35,7 @@ services:
    #   - "${APP_PORT:-8000}:8000"
 
   db:
-    image: $CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    image: djangogirls-db
     container_name: djangogirls-db
 #    build:
 #      context: .

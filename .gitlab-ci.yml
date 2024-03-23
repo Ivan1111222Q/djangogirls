@@ -8,37 +8,45 @@ variables:
   DEPLOY_SERVER: "root@31.129.97.232"
   DEPLOY_PATH: "/home/django"
 
-before_script:
+
+build:
+  stage: build
+  script:
+    - docker build -t djangogirls-nginx -f Dockerfile.nginx ./
+    - docker build -t djangogirls-app -f Dockerfile.app ./
+    - docker build -t djangogirls-db -f Dockerfile.db ./
+
+push:
+  stage: push
+  script:
+    - docker tag djangogirls-nginx localhost:5000/djangogirls-nginx
+    - docker tag djangogirls-app localhost:5000/djangogirls-app
+    - docker tag djangogirls-db localhost:5000/djangogirls-db
+    - docker push localhost:5000/djangogirls-nginx 
+    - docker push localhost:5000/djangogirls-app
+    - docker push localhost:5000/djangogirls-db
+
+deploy:
+  stage: deploy
+  before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-
-build:
-  stage: build
+    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
   script:
-    - docker build -t $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.nginx ./
-    - docker build -t $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.app ./
-    - docker build -t $CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID -f Dockerfile.db ./
-
-push:
-  stage: push
-  script:
-    - docker tag $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
-    - docker tag $CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
-    - docker tag $CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID localhost:5000/$CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
-    - docker push localhost:5000/$CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID 
-    - docker push localhost:5000/$CI_REGISTRY_IMAGE/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
-    - docker push localhost:5000/$CI_REGISTRY_IMAGE/db:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
-
-deploy:
-  stage: deploy
-  script:
-    - ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts
-    - ssh -V
-    - ssh -vvv -T $DEPLOY_SERVER || true
-    - scp  docker-compose.production.yml root@31.129.97.232:/home/django
-    - ssh $DEPLOY_SERVER "cd $DEPLOY_PATH && docker-compose down"
-    - ssh $DEPLOY_SERVER "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker-compose -f docker-compose.production.yml pull && docker-compose -f docker-compose.production.yml up -d"
+    - docker save djangogirls-nginx > nginx.tar
+    - docker save djangogirls-app > app.tar
+    - docker save djangogirls-db > db.tar
+    - scp nginx.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/nginx.tar
+    - scp app.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/app.tar
+    - scp db.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/db.tar
+    - scp docker-compose.production.yml $SSH_USER@$SSH_HOST:$DEPLOY_PATH/docker-compose.production.yml
+    - ssh $SSH_USER@$SSH_HOST 'docker load < /home/django/nginx.tar'
+    - ssh $SSH_USER@$SSH_HOST 'docker load < /home/django/app.tar'
+    - ssh $SSH_USER@$SSH_HOST 'docker load < /home/django/db.tar'
+    - ssh $SSH_USER@$SSH_HOST 'cd /home/django && docker-compose -f docker-compose.production.yml down'
+    - ssh $SSH_USER@$SSH_HOST 'cd /home/django && docker-compose -f docker-compose.production.yml up -d'
+  only:
+    - main

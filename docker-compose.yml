@@ -1,7 +1,8 @@
 version: "3.8"
 
 services:
-  nginx: 
+  nginx:
+    container_name: djangogirls-nginx
     build:
       context: .
       dockerfile: Dockerfile.nginx
