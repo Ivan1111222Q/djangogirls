@@ -36,17 +36,7 @@ deploy:
     - chmod 700 ~/.ssh
     - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
   script:
-    - docker save localhost:5000/djangogirls-nginx > nginx.tar
-    - docker save localhost:5000/djangogirls-app > app.tar
-    - docker save localhost:5000/djangogirls-db > db.tar
-    - scp nginx.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/nginx.tar
-    - scp app.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/app.tar
-    - scp db.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/db.tar
-    - scp docker-compose.production.yml $SSH_USER@$SSH_HOST:$DEPLOY_PATH/docker-compose.production.yml
-    - ssh $SSH_USER@$SSH_HOST 'docker load < /home/django/nginx.tar'
-    - ssh $SSH_USER@$SSH_HOST 'docker load < /home/django/app.tar'
-    - ssh $SSH_USER@$SSH_HOST 'docker load < /home/django/db.tar'
-    - ssh $SSH_USER@$SSH_HOST 'cd /home/django && docker-compose -f docker-compose.production.yml down'
-    - ssh $SSH_USER@$SSH_HOST 'cd /home/django && docker-compose -f docker-compose.production.yml up -d'
+    - scp docker-compose.production.yml $DEPLOY_SERVER:$DEPLOY_PATH/
+    - ssh $DEPLOY_SERVER "cd /home/django && docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker-compose -f docker-compose.production.yml pull && docker-compose -f docker-compose.production.yml up -d"
   only:
     - main
