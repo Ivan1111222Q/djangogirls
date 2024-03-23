@@ -36,9 +36,9 @@ deploy:
     - chmod 700 ~/.ssh
     - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
   script:
-    - docker save djangogirls-nginx > nginx.tar
-    - docker save djangogirls-app > app.tar
-    - docker save djangogirls-db > db.tar
+    - docker save localhost:5000/djangogirls-nginx > nginx.tar
+    - docker save localhost:5000/djangogirls-app > app.tar
+    - docker save localhost:5000/djangogirls-db > db.tar
     - scp nginx.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/nginx.tar
     - scp app.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/app.tar
     - scp db.tar $SSH_USER@$SSH_HOST:$DEPLOY_PATH/db.tar
