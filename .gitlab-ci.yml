@@ -37,7 +37,7 @@ deploy:
   stage: deploy
   script:
     - ssh -V
-    - ssh -vvv -T $DEPLOY_USER@$DEPLOY_SERVER || true
+    - ssh -vvv -T $DEPLOY_SERVER || true
     - scp  docker-compose.production.yml root@31.129.97.232:/home/django
     - ssh $DEPLOY_SERVER "cd $DEPLOY_PATH && docker-compose down"
     - ssh $DEPLOY_SERVER "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker-compose -f docker-compose.production.yml pull && docker-compose -f docker-compose.production.yml up -d"
