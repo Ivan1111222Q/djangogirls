@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
   nginx:
-    container_name: localhost:5000/djangogirls-nginx
+    image: localhost:5000/djangogirls-nginx
+    container_name: djangogirls-nginx
     build:
       context: .
       dockerfile: Dockerfile.nginx
@@ -11,8 +12,9 @@ services:
     depends_on:
       - app
 
-  app: 
-    container_name: localhost:5000/djangogirls-app
+  app:
+    image: localhost:5000/djangogirls-app
+    container_name: djangogirls-app
     build:
       context: .
       dockerfile: Dockerfile.app
@@ -33,7 +35,8 @@ services:
    #   - "${APP_PORT:-8000}:8000"
 
   db:
-    container_name: localhost:5000/djangogirls-db
+    image: localhost:5000/djangogirls-db
+    container_name: djangogirls-db
     build:
       context: .
       dockerfile: Dockerfile.db
