@@ -3,12 +3,6 @@ stages:
   - push
   - deploy
 
-variables:
-  CI_REGISTRY_IMAGE: "5.35.86.16/spirit/django"
-  DEPLOY_SERVER: "root@31.129.97.232"
-  DEPLOY_PATH: "/home/django"
-
-
 build:
   stage: build
   script:
@@ -19,9 +13,6 @@ build:
 push:
   stage: push
   script:
-    - docker tag djangogirls-nginx localhost:5000/djangogirls-nginx
-    - docker tag djangogirls-app localhost:5000/djangogirls-app
-    - docker tag djangogirls-db localhost:5000/djangogirls-db
     - docker push localhost:5000/djangogirls-nginx
     - docker push localhost:5000/djangogirls-app
     - docker push localhost:5000/djangogirls-db
