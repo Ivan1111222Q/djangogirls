@@ -28,6 +28,6 @@ deploy:
     - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
   script:
     - scp docker-compose.production.yml $DEPLOY_SERVER:$DEPLOY_PATH/
-    - ssh $DEPLOY_SERVER "cd /home/django && docker-compose -f docker-compose.production.yml pull && docker-compose -f docker-compose.production.yml up -d"
+    - ssh $DEPLOY_SERVER "cd /home/django && docker-compose -f docker-compose.production.yml up -d"
   only:
     - main
