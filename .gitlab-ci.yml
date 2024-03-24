@@ -6,16 +6,13 @@ stages:
 build:
   stage: build
   script:
-    - docker build -t djangogirls-nginx -f Dockerfile.nginx ./
-    - docker build -t djangogirls-app -f Dockerfile.app ./
-    - docker build -t djangogirls-db -f Dockerfile.db ./
+    - docker build -t localhost:5000/djangogirls-nginx -f Dockerfile.nginx ./
+    - docker build -t localhost:5000/djangogirls-app -f Dockerfile.app ./
+    - docker build -t localhost:5000/djangogirls-db -f Dockerfile.db ./
 
 push:
   stage: push
   script:
-    - docker tag djangogirls-nginx localhost:5000/djangogirls-nginx
-    - docker tag djangogirls-app localhost:5000/djangogirls-app
-    - docker tag djangogirls-db localhost:5000/djangogirls-db
     - docker push localhost:5000/djangogirls-nginx
     - docker push localhost:5000/djangogirls-app
     - docker push localhost:5000/djangogirls-db
