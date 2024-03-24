@@ -6,9 +6,7 @@ stages:
 build:
   stage: build
   script:
-    - docker build -t localhost:5000/djangogirls-nginx -f Dockerfile.nginx ./
-    - docker build -t localhost:5000/djangogirls-app -f Dockerfile.app ./
-    - docker build -t localhost:5000/djangogirls-db -f Dockerfile.db ./
+    - docker-compose build
 
 push:
   stage: push
