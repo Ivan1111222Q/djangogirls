@@ -11,9 +11,12 @@ build:
 push:
   stage: push
   script:
-    - docker push djangogirls-nginx 
-    - docker push djangogirls-app
-    - docker push djangogirls-db
+    - docker tag djangogirls-nginx localhost:5000/djangogirls-nginx
+    - docker tag djangogirls-app localhost:5000/djangogirls-app
+    - docker tag djangogirls-db localhost:5000/djangogirls-db
+    - docker push localhost:5000/djangogirls-nginx
+    - docker push localhost:5000/djangogirls-app
+    - docker push localhost:5000/djangogirls-db
 
 deploy:
   stage: deploy
