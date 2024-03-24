@@ -3,20 +3,28 @@ stages:
   - push
   - deploy
 
+variables:
+  CI_REGISTRY_IMAGE: "5.35.86.16/spirit/django"
+  DEPLOY_SERVER: "root@31.129.97.232"
+  DEPLOY_PATH: "/home/django"
+
+
 build:
   stage: build
   script:
-    - docker-compose build
+    - docker build -t djangogirls-nginx -f Dockerfile.nginx ./
+    - docker build -t djangogirls-app -f Dockerfile.app ./
+    - docker build -t djangogirls-db -f Dockerfile.db ./
 
 push:
   stage: push
   script:
-    - docker tag django-nginx localhost:5000/djangogirls-nginx
-    - docker tag django-app localhost:5000/djangogirls-app
-    - docker tag django-db localhost:5000/djangogirls-db
-    - docker push localhost:5000/django-nginx
-    - docker push localhost:5000/django-app
-    - docker push localhost:5000/django-db
+    - docker tag djangogirls-nginx localhost:5000/djangogirls-nginx
+    - docker tag djangogirls-app localhost:5000/djangogirls-app
+    - docker tag djangogirls-db localhost:5000/djangogirls-db
+    - docker push localhost:5000/djangogirls-nginx
+    - docker push localhost:5000/djangogirls-app
+    - docker push localhost:5000/djangogirls-db
 
 deploy:
   stage: deploy
@@ -28,7 +36,6 @@ deploy:
     - chmod 700 ~/.ssh
     - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
   script:
-    - ssh $DEPLOY_SERVER "cd /home/django && docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -aq)"
     - scp docker-compose.production.yml $DEPLOY_SERVER:$DEPLOY_PATH/
     - ssh $DEPLOY_SERVER "cd /home/django && docker-compose -f docker-compose.production.yml pull && docker-compose -f docker-compose.production.yml up -d"
   only:
