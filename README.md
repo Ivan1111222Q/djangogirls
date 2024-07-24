@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Django Girls website
 
 [![Build Status](https://travis-ci.org/DjangoGirls/djangogirls.svg?branch=master)](https://travis-ci.org/DjangoGirls/djangogirls) [![codecov](https://codecov.io/gh/DjangoGirls/djangogirls/branch/master/graph/badge.svg)](https://codecov.io/gh/DjangoGirls/djangogirls)
@@ -325,6 +326,9 @@ See [issue 571- Website internationalization/translations ](https://github.com/D
 Alternatively submit the pull request to the `translations` branch.
 =======
 # django
+=======
+# Django
+>>>>>>> 6897994bdfa2b0f547150add6ec9c4623a139880
 
 
 
@@ -341,14 +345,22 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
+<<<<<<< HEAD
 git remote add origin http://labs-appl-e.ru/spirit/django.git
+=======
+git remote add origin http://31.128.36.169/root/django.git
+>>>>>>> 6897994bdfa2b0f547150add6ec9c4623a139880
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
+<<<<<<< HEAD
 - [ ] [Set up project integrations](http://labs-appl-e.ru/spirit/django/-/settings/integrations)
+=======
+- [ ] [Set up project integrations](http://31.128.36.169/root/django/-/settings/integrations)
+>>>>>>> 6897994bdfa2b0f547150add6ec9c4623a139880
 
 ## Collaborate with your team
 
@@ -417,4 +429,7 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+<<<<<<< HEAD
 >>>>>>> gitlab/main
+=======
+>>>>>>> 6897994bdfa2b0f547150add6ec9c4623a139880
