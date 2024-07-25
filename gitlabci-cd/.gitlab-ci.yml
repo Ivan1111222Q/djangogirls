@@ -1,0 +1,23 @@
+stages:
+  - build
+  - push
+  - deploy
+
+build:
+  stage: build
+  script:
+    - docker-compose build
+
+push:
+  stage: push
+  script:
+    - docker push localhost:5000/djangogirls-nginx
+    - docker push localhost:5000/djangogirls-app
+    - docker push localhost:5000/djangogirls-db
+
+deploy:
+  stage: deploy
+  script:
+    - docker-compose -f docker-compose.production.yml up -d
+  only:
+    - main
