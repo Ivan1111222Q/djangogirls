@@ -1,0 +1,24 @@
+[0;1;32m●[0m docker.service - Docker Application Container Engine
+     Loaded: loaded (]8;;file://widbmazjqd/usr/lib/systemd/system/docker.service/usr/lib/systemd/system/docker.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Wed 2024-07-24 08:22:38 UTC; 1 day 2h ago
+TriggeredBy: [0;1;32m●[0m docker.socket
+       Docs: ]8;;https://docs.docker.comhttps://docs.docker.com]8;;
+   Main PID: 986 (dockerd)
+      Tasks: 32
+     Memory: 179.9M (peak: 989.1M)
+        CPU: 1min 59.277s
+     CGroup: /system.slice/docker.service
+             ├─[0;38;5;245m  986 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock[0m
+             ├─[0;38;5;245m74106 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 5000 -container-ip 172.17.0.2 -container-port 5000[0m
+             └─[0;38;5;245m74124 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 5000 -container-ip 172.17.0.2 -container-port 5000[0m
+
+Jul 24 12:08:11 widbmazjqd dockerd[986]: time="2024-07-24T12:08:11.808072221Z" level=warning msg="ShouldRestart failed, container will not be restarted" container=04af38a3d95f5381719ebc0241dbed56e9583a6656439ffaccc5f19211bbcd29 daemonShuttingDown=false error="restart canceled" execDuration=36m29.434011964s exitStatus="{2 2024-07-24 12:08:11.743449018 +0000 UTC}" hasBeenManuallyStopped=true restartCount=0
+Jul 24 13:36:48 widbmazjqd dockerd[986]: time="2024-07-24T13:36:48.909553738Z" level=info msg="ignoring event" container=e6765beba32f1b50cb69e645781565f3d55a03b52d6719358a19ad6bfea318d4 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+Jul 24 13:36:49 widbmazjqd dockerd[986]: time="2024-07-24T13:36:49.363941619Z" level=info msg="ignoring event" container=3d28a71d61f0c8a300add41fd9c50695b59ab9a76323211cb049de0c9f9703e0 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+Jul 25 10:23:34 widbmazjqd dockerd[986]: time="2024-07-25T10:23:34.569691299Z" level=info msg="ignoring event" container=7e674ed74efa5864c4924cda9a67dc31599e75c747d43f4e0ea6c830d7393a8f module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+Jul 25 10:23:34 widbmazjqd dockerd[986]: time="2024-07-25T10:23:34.971233078Z" level=info msg="ignoring event" container=32aaab175e5d406d00a78a1f170702570fbdcd0f4d8d4c0a0de4d883656ccb0c module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+Jul 25 10:25:40 widbmazjqd dockerd[986]: time="2024-07-25T10:25:40.403096345Z" level=info msg="ignoring event" container=76a73721b782c4884ec28aa926f7bbc521b74266c1812b7a9b9b1c5596456158 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+Jul 25 10:25:40 widbmazjqd dockerd[986]: time="2024-07-25T10:25:40.876400156Z" level=info msg="ignoring event" container=83964d30b254b175016198327e00c7e658bd2519c0761ed03029069e813d5a8e module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+Jul 25 10:30:13 widbmazjqd dockerd[986]: time="2024-07-25T10:30:13.526789122Z" level=error msg=/moby.buildkit.v1.Control/Solve error="rpc error: code = Canceled desc = context canceled"
+Jul 25 10:31:22 widbmazjqd dockerd[986]: time="2024-07-25T10:31:22.584543316Z" level=info msg="ignoring event" container=c514b2c086378b1a3170c517e985e6aa5a10cf665db41674bf7f0dc98ff62de1 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+Jul 25 10:31:23 widbmazjqd dockerd[986]: time="2024-07-25T10:31:23.077573323Z" level=info msg="ignoring event" container=0f508ecf58cd199bc46fa336ce2ca1ff0792cc3f1fe9005fecc7143f2e2534ac module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
