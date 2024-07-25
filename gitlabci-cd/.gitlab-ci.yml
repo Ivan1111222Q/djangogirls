@@ -6,7 +6,7 @@ stages:
 build:
   stage: build
   script:
-    - docker-compose build
+    - docker compose build
 
 push:
   stage: push
@@ -18,6 +18,6 @@ push:
 deploy:
   stage: deploy
   script:
-    - docker-compose -f docker-compose.production.yml up -d
+    - docker compose -f docker-compose.production.yml up -d
   only:
     - main
