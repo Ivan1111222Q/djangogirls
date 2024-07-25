@@ -17,15 +17,7 @@ push:
 
 deploy:
   stage: deploy
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
   script:
-    - scp docker-compose.production.yml $DEPLOY_SERVER:$DEPLOY_PATH/
-    - ssh $DEPLOY_SERVER "cd /home/django && docker-compose -f docker-compose.production.yml up -d"
+    - docker-compose -f docker-compose.production.yml up -d
   only:
     - main
