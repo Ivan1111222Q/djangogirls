@@ -14,7 +14,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Push') {
             steps {
                 script {
@@ -25,13 +25,23 @@ pipeline {
                 }
             }
         }
-        
+
+        stage('Show Branch') {
+            steps {
+                script {
+                    sh 'git rev-parse --abbrev-ref HEAD'
+                    sh 'echo "Current branch is ${BRANCH_NAME}"'
+                }
+            }
+        }
+
         stage('Deploy') {
             when {
                 branch 'main'
             }
             steps {
                 script {
+                    echo 'Deploying application...'
                     // Deploy Docker containers using production compose file
                     sh 'docker-compose -f docker-compose.production.yml up -d'
                 }
